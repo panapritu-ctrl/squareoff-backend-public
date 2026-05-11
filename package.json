@@ -1,0 +1,14 @@
+{
+  "name": "squareoff-backend",
+  "version": "1.0.0",
+  "description": "SquareOff Free Backend Server",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "firebase-admin": "^11.11.1"
+  }
+}
