@@ -60,10 +60,10 @@ app.post('/claimWelcomeBonus', authenticate, async (req, res) => {
       }
       
       const userDoc = await t.get(userRef);
-      const currentCoins = userDoc.exists && userDoc.data().coinBalance != null ? userDoc.data().coinBalance : 0;
+      const currentCoins = userDoc.exists && userDoc.data().coins != null ? userDoc.data().coins : 0;
       
       t.set(deviceRef, { claimedAt: admin.firestore.FieldValue.serverTimestamp(), claimedBy: uid });
-      t.set(userRef, { coinBalance: currentCoins + 500 }, { merge: true });
+      t.set(userRef, { coins: currentCoins + 500 }, { merge: true });
     });
 
     res.status(200).send({ success: true, message: "Welcome bonus granted", awarded: 500 });
@@ -92,10 +92,10 @@ app.post('/claimDailyBonus', authenticate, async (req, res) => {
       }
 
       const userDoc = await t.get(userRef);
-      const currentCoins = userDoc.exists && userDoc.data().coinBalance != null ? userDoc.data().coinBalance : 0;
+      const currentCoins = userDoc.exists && userDoc.data().coins != null ? userDoc.data().coins : 0;
 
       t.set(bonusRef, { lastClaimed: today }, { merge: true });
-      t.set(userRef, { coinBalance: currentCoins + 50 }, { merge: true });
+      t.set(userRef, { coins: currentCoins + 50 }, { merge: true });
     });
 
     res.status(200).send({ success: true, message: "Daily bonus granted", awarded: 50 });
@@ -162,8 +162,8 @@ app.get('/admobSsvCallback', async (req, res) => {
 
     await db.runTransaction(async (t) => {
       const doc = await t.get(userRef);
-      const currentCoins = doc.exists && doc.data().coinBalance != null ? doc.data().coinBalance : 0;
-      t.set(userRef, { coinBalance: currentCoins + reward_amount }, { merge: true });
+      const currentCoins = doc.exists && doc.data().coins != null ? doc.data().coins : 0;
+      t.set(userRef, { coins: currentCoins + reward_amount }, { merge: true });
     });
 
     res.status(200).send("OK");
