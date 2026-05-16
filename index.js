@@ -26,6 +26,11 @@ app.use(cors({ origin: true }));
 // Parse JSON body unless it's the SSV callback which might need raw parsing depending on AdMob, but AdMob sends GET request for SSV actually.
 app.use(express.json());
 
+// Serve static files from the public directory (for Privacy Policy)
+app.use('/public', express.static(__dirname + '/public'));
+// Also serve it at root /privacy.html to make it easy
+app.get('/privacy.html', (req, res) => res.sendFile(__dirname + '/public/privacy.html'));
+
 // ── Authentication Middleware ───────────────────────────────────────────────
 async function authenticate(req, res, next) {
   const authHeader = req.headers.authorization;
